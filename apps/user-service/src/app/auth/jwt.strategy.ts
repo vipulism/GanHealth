@@ -3,7 +3,8 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UserResponseDto } from "@ganhealth/validation";
-import { JwtUser, ROLE, STATUS } from "@ganhealth/types";
+import { JwtUser } from "@ganhealth/types";
+import { toUserResponse } from "@ganhealth/common";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,32 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         })
     }
 
-    private toUserResponse(user: {
-        id: string;
-        email: string;
-        name: string;
-        role: string;
-        status: string;
-        isEmailVerified: boolean;
-        lastLoginAt: Date | null;
-        profileImage: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-    }): UserResponseDto {
-        return {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role as ROLE,
-            status: user.status as STATUS,
-            isEmailVerified: user.isEmailVerified,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-            ...(user.lastLoginAt ? { lastLoginAt: user.lastLoginAt } : {}),
-            ...(user.profileImage ? { profileImage: user.profileImage } : {}),
-        };
-    }
-
     async validate(payload: JwtUser): Promise<UserResponseDto> {
         const rowUser = await this.prisma.user.findUnique({
             where: { id: payload.sub }
@@ -50,6 +25,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         const { passwordHash, ...user } = rowUser;
         void passwordHash;
-        return this.toUserResponse(user)
+        return toUserResponse(user);
     }
 }

@@ -1,9 +1,10 @@
-import { JwtUser, ROLE, STATUS } from '@ganhealth/types';
+import { JwtUser } from '@ganhealth/types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto, LoginResponseDto, UserResponseDto } from '@ganhealth/validation';
+import { toUserResponse } from '@ganhealth/common';
 
 
 @Injectable()
@@ -13,32 +14,6 @@ export class AuthService {
         private prisma: PrismaService,
         private jwtService: JwtService
     ) { }
-
-    private toUserResponse(user: {
-        id: string;
-        email: string;
-        name: string;
-        role: string;
-        status: string;
-        isEmailVerified: boolean;
-        lastLoginAt: Date | null;
-        profileImage: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-    }): UserResponseDto {
-        return {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role as ROLE,
-            status: user.status as STATUS,
-            isEmailVerified: user.isEmailVerified,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-            ...(user.lastLoginAt ? { lastLoginAt: user.lastLoginAt } : {}),
-            ...(user.profileImage ? { profileImage: user.profileImage } : {}),
-        };
-    }
 
     async login(cred: LoginDto): Promise<LoginResponseDto> {
         const user = await this.validateUser(cred.email, cred.password);
@@ -72,7 +47,7 @@ export class AuthService {
 
         const { passwordHash, ...responseUser } = user;
         void passwordHash;
-        return this.toUserResponse(responseUser)
+        return toUserResponse(responseUser);
 
     }
 }
