@@ -1,4 +1,4 @@
-import { CreateUserDto } from '@ganhealth/validation';
+import { CreateUserDto, UserResponseDto } from '@ganhealth/validation';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(body: CreateUserDto) {
+  async create(body: CreateUserDto): Promise<UserResponseDto> {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: body.email },
     });
@@ -20,7 +20,6 @@ export class UserService {
     }
 
     const hashedPassword = await bcrypt.hash(body.password, 10);
-
 
     const createdUser = await this.prisma.user.create({
       data: {
