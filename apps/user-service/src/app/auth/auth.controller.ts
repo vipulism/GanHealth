@@ -4,6 +4,7 @@ import { ZodValidationPipe } from './../../../common/pipes/zod.pipe';
 import { Body, Controller, Post } from '@nestjs/common';
 import { GetUser } from '../common/decorators/get.user.decorator';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +15,7 @@ export class AuthController {
     ) { }
 
     @Post('login')
+    @Throttle({ default: { limit: 5, ttl: 60000 } })
     login(
         @Body(new ZodValidationPipe(LoginSchema))
         body: LoginDto
