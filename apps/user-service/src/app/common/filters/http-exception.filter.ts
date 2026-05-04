@@ -5,6 +5,7 @@ import {
     HttpException,
     HttpStatus,
 } from '@nestjs/common';
+import pino from 'pino';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -30,6 +31,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 errors = res.errors || null;
             }
         }
+
+        const logger = pino();
+
+        logger.error(
+            {
+                requestId: request.requestId,
+                path: request.url,
+            },
+            exception instanceof Error ? exception.message : 'Unknown error'
+        );
 
         response.status(status).json({
             success: false,
