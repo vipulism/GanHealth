@@ -23,9 +23,53 @@ export class AuthService {
             email: user.email,
             role: user.role
         }
+        const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
+        const access_token = this.jwtService.sign(payload, { expiresIn: '5m' });
+
+        const hashedRt = await bcrypt.hash(refresh_token, 10);
+
+
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: { refreshToken: hashedRt },
+        });
+
 
         return {
-            access_token: this.jwtService.sign(payload)
+            access_token,
+            refresh_token
+        };
+    }
+
+
+    async refresh(refreshToken: string) {
+
+        try {
+            const payload = this.jwtService.verify(refreshToken);
+
+            const user = await this.prisma.user.findUnique({
+                where: { id: payload.sub },
+            });
+
+            if (!user || !user.refreshToken) {
+                throw new UnauthorizedException();
+            }
+
+            const isMatch = await bcrypt.compare(refreshToken, user.refreshToken);
+
+            if (!isMatch) throw new UnauthorizedException();
+
+            const newAccessToken = this.jwtService.sign({
+                sub: user.id,
+                email: user.email,
+                role: user.role,
+            });
+
+            return { access_token: newAccessToken };
+
+        } catch {
+            throw new UnauthorizedException('Invalid refresh token');
         }
     }
 
@@ -49,5 +93,14 @@ export class AuthService {
         void passwordHash;
         return toUserResponse(responseUser);
 
+    }
+
+    async logout(userId: string) {
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: { refreshToken: null },
+        });
+
+        return { message: 'Logged out successfully' };
     }
 }

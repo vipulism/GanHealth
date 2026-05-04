@@ -6,9 +6,14 @@ export const LoginSchema = z.object({
 });
 
 export const LoginResponseScheme = z.object({
-    access_token: z.jwt()
+    access_token: z.jwt(),
+    refresh_token: z.jwt()
 })
 
+
+export const RefreshSchema = z.object({
+    refresh_token: z.string(),
+});
 
 export type LoginDto = z.infer<typeof LoginSchema>;
 export type LoginResponseDto = z.infer<typeof LoginResponseScheme>;
