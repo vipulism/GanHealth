@@ -1,10 +1,16 @@
-enum Role {
-    USER,
-    ADMIN,
+export enum ROLE {
+    USER = "USER",
+    ADMIN = "ADMIN",
 }
 
-enum Status {
-    ACTIVE,
-    INACTIVE,
-    BLOCKED
+export enum STATUS {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    BLOCKED = "BLOCKED",
+}
+
+export interface JwtUser {
+    sub: string;
+    email: string;
+    role: ROLE;
 }

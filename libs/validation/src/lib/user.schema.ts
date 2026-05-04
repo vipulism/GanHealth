@@ -1,4 +1,4 @@
-import { Role, Status } from "@prisma/client";
+import { ROLE, STATUS } from '@ganhealth/types';
 import z from "zod";
 
 
@@ -13,8 +13,8 @@ export const UserResponseSchema = z.object({
     email: z.email().trim().toLowerCase(),
     name: z.string().trim().min(2).max(100),
     id: z.string().length(36),
-    role: z.enum(Role),
-    status: z.enum(Status),
+    role: z.nativeEnum(ROLE),
+    status: z.nativeEnum(STATUS),
     isEmailVerified: z.boolean(),
     lastLoginAt: z.date().optional(),
     profileImage: z.string().optional(),

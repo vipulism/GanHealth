@@ -2,16 +2,6 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
-enum Role {
-  USER
-  ADMIN
-}
-
-enum Status {
-  ACTIVE
-  INACTIVE
-  BLOCKED
-}
 
 generator client {
   provider = "prisma-client-js"
@@ -27,8 +17,8 @@ model User {
   email           String    @unique
   passwordHash    String
   name            String
-  role            Role?     @default(USER)
-  status          Status?   @default(ACTIVE)
+  role            String    @default("USER")
+  status          String    @default("ACTIVE")
   isEmailVerified Boolean   @default(false)
   lastLoginAt     DateTime?
   profileImage    String?
