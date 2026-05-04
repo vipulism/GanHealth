@@ -7,6 +7,8 @@ import { GetUser } from '../common/decorators/get.user.decorator';
 import { RolesGuard } from '../auth/role.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ROLE } from '@ganhealth/types';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
 
 @Controller('user')
 export class UserController {
@@ -21,6 +23,7 @@ export class UserController {
     return this.userService.create(body);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
   @Get('profile')
   getUser(@GetUser() user: UserResponseDto) {
@@ -28,6 +31,7 @@ export class UserController {
   }
 
 
+  @ApiBearerAuth()
   @UseGuards(JWTAuthGuard, RolesGuard)
   @Roles(ROLE.ADMIN)
   @Get('all')
