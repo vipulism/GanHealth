@@ -30,7 +30,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('GanHealth API')
     .setDescription('User & Auth APIs')
-    .setVersion('1.0')
+    .setVersion('1')
     .addBearerAuth()
     .build();
 
