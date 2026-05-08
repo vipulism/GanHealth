@@ -3,7 +3,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { ROLE, STATUS } from '@ganhealth/types';
+import { PublicUser, PublicUserSelect, ROLE, STATUS } from '@ganhealth/types';
 import { toUserResponse } from '@ganhealth/common';
 
 
@@ -13,7 +13,7 @@ export class UserService {
 
   async create(body: CreateUserDto): Promise<UserResponseDto> {
     const existingUser = await this.prisma.user.findUnique({
-      where: { email: body.email },
+      where: { email: body.email }
     });
 
     if (existingUser) {
@@ -39,23 +39,25 @@ export class UserService {
     return toUserResponse(user);
   }
 
-  async findAll() {
-    return await this.prisma.user.findMany();
+  async findAll(): Promise<PublicUser[]> {
+    return await this.prisma.user.findMany({
+      take:10,
+      select: PublicUserSelect
+    });
   }
 
 
-
-  async findOne(id: string): Promise<UserResponseDto> {
-    const userRow = await this.prisma.user.findUnique({
+  async findOne(id: string): Promise<PublicUser> {
+    const  userRow: PublicUser = await this.prisma.user.findUnique({
       where: { id },
+      select: PublicUserSelect
     });
 
     if (!userRow) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    const { passwordHash, ...user } = userRow;
-    void passwordHash;
-    return toUserResponse(user);
+   
+    return userRow;
 
   }
 

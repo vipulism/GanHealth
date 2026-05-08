@@ -1,7 +1,7 @@
 import { ROLE, STATUS } from '@ganhealth/types';
 import { UserResponseDto } from '@ganhealth/validation';
 
-type UserResponseSource = {
+export type UserResponseSource = {
   id: string;
   email: string;
   name: string;

@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export enum ROLE {
     USER = "USER",
     ADMIN = "ADMIN",
@@ -14,3 +16,21 @@ export interface JwtUser {
     email: string;
     role: ROLE;
 }
+
+
+export const PublicUserSelect = {
+    id: true,
+    email: true,
+    name: true,
+    role: true,
+    status: true,
+    isEmailVerified: true,
+    lastLoginAt: true,
+    profileImage: true,
+    createdAt: true,
+    updatedAt: true,
+  } satisfies Prisma.UserSelect;
+  
+  export type PublicUser = Prisma.UserGetPayload<{
+    select: typeof PublicUserSelect;
+  }>;
