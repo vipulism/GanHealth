@@ -48,17 +48,16 @@ export class UserService {
 
 
   async findOne(id: string): Promise<PublicUser> {
-    const  userRow: PublicUser = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
       select: PublicUserSelect
     });
 
-    if (!userRow) {
+    if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-   
-    return userRow;
 
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

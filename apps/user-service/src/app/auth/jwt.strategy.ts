@@ -1,10 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { PrismaService } from "../../prisma/prisma.service";
-import { UserResponseDto } from "@ganhealth/validation";
-import { JwtUser } from "@ganhealth/types";
-import { toUserResponse } from "@ganhealth/common";
+import { JwtUser, PublicUser, PublicUserSelect } from "@ganhealth/types";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,13 +16,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         })
     }
 
-    async validate(payload: JwtUser): Promise<UserResponseDto> {
-        const rowUser = await this.prisma.user.findUnique({
-            where: { id: payload.sub }
+    async validate(payload: JwtUser): Promise<PublicUser> {
+        const user = await this.prisma.user.findUnique({
+            where: { id: payload.sub },
+            select: PublicUserSelect
         });
-
-        const { passwordHash, ...user } = rowUser;
-        void passwordHash;
-        return toUserResponse(user);
+        if (!user) {
+            throw new UnauthorizedException('User not found');
+        }
+        return user;
     }
 }
