@@ -12,6 +12,8 @@ import { HttpExceptionFilter } from './app/common/filters/http-exception.filter'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableShutdownHooks();
+
   const configService = app.get(ConfigService);
   const globalPrefix = 'api';
 
