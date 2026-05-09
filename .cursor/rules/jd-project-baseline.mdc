@@ -1,0 +1,11 @@
+---
+description: Role JD as project reference baseline + interview prep (Monday)
+alwaysApply: true
+---
+
+# Project baseline (JD-aligned)
+
+- **Source of truth:** `docs/JD-PROJECT-BASELINE.md` — clinical/healthcare platform scope, Angular 18+ & Material, NestJS + Prisma + MariaDB, Docker/Git/Swagger/Postman/Jest, tech-lead expectations, Okta/Auth0/similar auth, Gen AI & voice (with healthcare/PHI caution), HL7/FHIR as integration context.
+- **Infrastructure:** `docs/INFRA-BASELINE.md` — MariaDB + all microservices target **Docker on a dedicated LAN host**; env and URLs must use LAN or Docker DNS names, not laptop-only `localhost` assumptions for deployment.
+- **Prioritize** implementation and explanations that match that doc: secure auth toward enterprise IdP, testability, API docs, container-ready config, and healthcare-appropriate data handling.
+- **Maintainer goal:** Interview readiness for **Monday** — when suggesting work or study topics, tie them to JD talking points (stack depth, auth, leadership, healthcare awareness, AI/voice boundaries).
