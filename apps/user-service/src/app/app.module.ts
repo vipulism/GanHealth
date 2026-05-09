@@ -9,6 +9,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { validateEnv } from './config/env.validation';
 
 /**
  * Root application module: global configuration, persistence, auth, and HTTP middleware.
@@ -18,6 +19,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
+      validate: validateEnv,
     }),
     PrismaModule,
     UserModule,
