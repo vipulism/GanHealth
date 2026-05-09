@@ -3,7 +3,6 @@ import { LoginSchema, LoginDto, RefreshSchema } from '@ganhealth/validation';
 import { ZodValidationPipe } from './../../../common/pipes/zod.pipe';
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { GetUser } from '../common/decorators/get.user.decorator';
-import { PrismaService } from '../../prisma/prisma.service';
 import { Throttle } from '@nestjs/throttler';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { JWTAuthGuard } from './jwt.auth.gaurd';

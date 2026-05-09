@@ -1,11 +1,19 @@
 import nx from '@nx/eslint-plugin';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
 export default [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
   {
-    ignores: ['**/dist', '**/out-tsc'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/out-tsc/**',
+      '**/.nx/**',
+      '**/coverage/**',
+      '**/tmp/**',
+    ],
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
@@ -36,7 +44,7 @@ export default [
       '**/*.cjs',
       '**/*.mjs',
     ],
-    // Override or add rules here
     rules: {},
   },
+  eslintConfigPrettier,
 ];
