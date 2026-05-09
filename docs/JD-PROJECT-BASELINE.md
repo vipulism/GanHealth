@@ -119,4 +119,5 @@ Use the JD as the outline for stories and depth.
 
 - Treat this file as the **single JD-aligned baseline** for the project unless the hiring brief changes.  
 - **Deployment topology** is defined in **`docs/INFRA-BASELINE.md`**; keep it in sync when infra assumptions change.  
+- **Implementation tiers** (A/B/C scope for the monorepo): **`docs/TIER-ROADMAP.md`**.  
 - On scope changes from the client, update **GanHealth repo alignment** and responsibilities sections accordingly.

@@ -38,6 +38,7 @@ This is a **project-level** assumption for GanHealth runtime and documentation. 
 ## Related files
 
 - `docs/JD-PROJECT-BASELINE.md` — product and role alignment.
+- `docs/TIER-ROADMAP.md` — Tier A/B/C implementation scope for the monorepo.
 - `.env.example` — placeholder `db-host.example` should be replaced with your LAN DB hostname or Docker service name.
 
 Update this document if the team later splits DB and apps across multiple machines or moves to cloud-managed databases.
