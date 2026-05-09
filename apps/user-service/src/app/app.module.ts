@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from '../prisma/prisma.module';
@@ -9,8 +10,15 @@ import { APP_GUARD } from '@nestjs/core';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
+/**
+ * Root application module: global configuration, persistence, auth, and HTTP middleware.
+ */
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      expandVariables: true,
+    }),
     PrismaModule,
     UserModule,
     AuthModule,
@@ -32,6 +40,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
   ],
 })
 export class AppModule {
+  /** Registers request-scoped middleware for all routes. */
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(RequestIdMiddleware, LoggerMiddleware).forRoutes('*');
   }

@@ -1,0 +1,22 @@
+---
+description: JavaScript and TypeScript coding standards
+globs:
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.mjs"
+  - "**/*.cjs"
+  - "**/*.ts"
+  - "**/*.tsx"
+alwaysApply: false
+---
+
+# JavaScript and TypeScript Standards
+
+- Use strict typing and avoid `any`; prefer explicit interfaces and utility types.
+- Keep exported APIs stable and strongly typed across app and library boundaries.
+- Write JSDoc for all exported functions and classes, including params, returns, and thrown errors.
+- Prefer pure functions and dependency injection over hidden shared mutable state.
+- Handle async errors explicitly; avoid empty `catch` blocks and swallowed promise rejections.
+- Favor clear, readable control flow over clever one-liners.
+- Reuse existing helpers before creating new utility abstractions.
+- Keep modules cohesive: one domain responsibility per file where practical.

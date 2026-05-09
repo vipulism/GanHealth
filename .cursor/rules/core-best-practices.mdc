@@ -1,0 +1,16 @@
+---
+description: Core engineering rules for safe, maintainable changes
+alwaysApply: true
+---
+
+# Core Best Practices
+
+- Follow existing architecture and naming conventions before introducing new patterns.
+- Prefer small, focused changes with clear intent and minimal side effects.
+- Preserve backward compatibility unless a breaking change is explicitly requested.
+- Validate behavior with the narrowest useful test scope (unit first, then integration as needed).
+- Never commit secrets, tokens, passwords, or environment-specific credentials.
+- Keep comments concise and add inline comments only for complex business logic.
+- Do not over-comment self-documenting code.
+- If requirements are ambiguous, ask one precise clarifying question before implementing risky behavior.
+- When changing APIs or data contracts, update related validation, types, and error handling together.

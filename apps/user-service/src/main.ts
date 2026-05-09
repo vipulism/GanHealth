@@ -4,15 +4,15 @@
  */
 
 import { Logger, VersioningType } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
-import 'dotenv/config';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './app/common/filters/http-exception.filter';
-
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
   const globalPrefix = 'api';
 
   app.setGlobalPrefix(globalPrefix);
@@ -23,7 +23,12 @@ async function bootstrap() {
     defaultVersion: '1'
   });
 
-  const port = process.env.PORT || 3000;
+  const portRaw = configService.get<string>('PORT');
+  const port =
+    portRaw !== undefined && portRaw !== ''
+      ? Number.parseInt(portRaw, 10)
+      : 3000;
+  const listenPort = Number.isFinite(port) ? port : 3000;
 
 
 
@@ -39,9 +44,9 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
 
-  await app.listen(port);
+  await app.listen(listenPort);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+    `🚀 Application is running on: http://localhost:${listenPort}/${globalPrefix}`,
   );
 }
 

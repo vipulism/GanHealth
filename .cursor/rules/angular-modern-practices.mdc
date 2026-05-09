@@ -1,0 +1,44 @@
+---
+description: Angular project standards using modern supported patterns
+globs:
+  - "apps/**/*.component.ts"
+  - "apps/**/*.directive.ts"
+  - "apps/**/*.pipe.ts"
+  - "apps/**/*.service.ts"
+  - "apps/**/*.guard.ts"
+  - "apps/**/*.resolver.ts"
+  - "apps/**/*.interceptor.ts"
+  - "apps/**/*.module.ts"
+  - "apps/**/*.routing.ts"
+  - "apps/**/*.routes.ts"
+  - "apps/**/*.html"
+  - "apps/**/*.scss"
+  - "apps/**/*.sass"
+  - "apps/**/*.css"
+  - "libs/**/*.component.ts"
+  - "libs/**/*.directive.ts"
+  - "libs/**/*.pipe.ts"
+  - "libs/**/*.service.ts"
+  - "libs/**/*.guard.ts"
+  - "libs/**/*.resolver.ts"
+  - "libs/**/*.interceptor.ts"
+  - "libs/**/*.module.ts"
+  - "libs/**/*.routing.ts"
+  - "libs/**/*.routes.ts"
+  - "libs/**/*.html"
+  - "libs/**/*.scss"
+  - "libs/**/*.sass"
+  - "libs/**/*.css"
+alwaysApply: false
+---
+
+# Angular Modern Practices
+
+- Use current Angular APIs and avoid deprecated or outdated syntax and lifecycle patterns.
+- Prefer standalone components, typed reactive forms, and signal-friendly patterns where applicable.
+- Keep business logic in services/facades; keep components focused on presentation and orchestration.
+- Use `OnPush` change detection for performance-sensitive components by default.
+- Keep templates simple: move complex expressions into computed properties or methods.
+- Manage subscriptions safely (`async` pipe, `takeUntilDestroyed`, or framework-recommended patterns).
+- Ensure route-level boundaries are lazy-loaded when it improves startup performance.
+- Keep Angular code aligned with ESLint, strict TypeScript checks, and framework style guidance.
