@@ -6,7 +6,23 @@ import * as bcrypt from 'bcrypt';
 import { PublicUser, PublicUserSelect, ROLE, STATUS } from '@ganhealth/types';
 import { toUserResponse } from '@ganhealth/common';
 
+const DEFAULT_PAGE_SIZE = 10;
+const MAX_PAGE_SIZE = 100;
 
+/**
+ * Paginated list of public user fields returned by {@link UserService.findAll}.
+ */
+export interface PaginatedPublicUsers {
+  data: PublicUser[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+/** User persistence and profile operations backed by Prisma. */
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) { }
@@ -39,11 +55,37 @@ export class UserService {
     return toUserResponse(user);
   }
 
-  async findAll(): Promise<PublicUser[]> {
-    return await this.prisma.user.findMany({
-      take:10,
-      select: PublicUserSelect
-    });
+  /**
+   * Returns a page of users with total count metadata.
+   *
+   * @param page - 1-based page index
+   * @param limit - page size, clamped to {@link MAX_PAGE_SIZE}
+   */
+  async findAll(page: number, limit: number): Promise<PaginatedPublicUsers> {
+    const safePage = Math.max(1, Math.floor(Number.isFinite(page) ? page : 1));
+    const rawLimit = Math.floor(Number.isFinite(limit) ? limit : DEFAULT_PAGE_SIZE);
+    const safeLimit = Math.min(Math.max(1, rawLimit), MAX_PAGE_SIZE);
+    const skip = (safePage - 1) * safeLimit;
+
+    const [total, data] = await this.prisma.$transaction([
+      this.prisma.user.count(),
+      this.prisma.user.findMany({
+        skip,
+        take: safeLimit,
+        select: PublicUserSelect,
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        page: safePage,
+        limit: safeLimit,
+        total,
+        totalPages: total === 0 ? 0 : Math.ceil(total / safeLimit),
+      },
+    };
   }
 
 
