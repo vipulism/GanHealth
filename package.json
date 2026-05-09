@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "build": "nx build user-service",
+    "build:gateway": "nx build api-gateway",
     "serve": "nx serve user-service",
+    "serve:gateway": "nx serve api-gateway",
     "test": "nx test user-service",
     "test:all": "nx run-many -t test",
     "lint": "nx lint user-service",

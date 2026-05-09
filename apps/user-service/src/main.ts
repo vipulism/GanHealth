@@ -25,11 +25,7 @@ async function bootstrap() {
     defaultVersion: '1'
   });
 
-  const portRaw = configService.get<string>('PORT');
-  const port =
-    portRaw !== undefined && portRaw !== ''
-      ? Number.parseInt(portRaw, 10)
-      : 3000;
+  const port = configService.get<number>('USER_SERVICE_PORT') ?? 3000;
   const listenPort = Number.isFinite(port) ? port : 3000;
 
 

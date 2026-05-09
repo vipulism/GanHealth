@@ -12,7 +12,7 @@ Part of the project tier roadmap: **[`TIER-ROADMAP.md`](./TIER-ROADMAP.md)**.
 
 | Section | Status |
 |--------|--------|
-| **1. Config** | Done — `validateEnv` + Zod in `apps/user-service/src/app/config/env.validation.ts`, wired in `AppModule` |
+| **1. Config** | Done — `validateEnv` + Zod in `apps/user-service/src/app/config/env.validation.ts` (`USER_SERVICE_PORT`, etc.), wired in `AppModule` |
 | **2. Prisma** | Done — `refreshToken: ''` on logout; migration `20260510120000_add_user_created_at_index` |
 | **3. User list** | Done — pagination + `orderBy: { createdAt: 'desc' }` |
 | **4. Cleanup / Swagger** | Done — `@ApiTags('Users')`, `validateUser(email: string, password: string)`, generic `ZodValidationPipe<unknown, …>` |
@@ -24,7 +24,7 @@ Part of the project tier roadmap: **[`TIER-ROADMAP.md`](./TIER-ROADMAP.md)**.
 ## 1. Config & startup
 
 - [x] Add `@nestjs/config`
-- [x] `ConfigModule.forRoot({ isGlobal: true, validate: … })` with Zod for `DATABASE_URL`, `JWT_SECRET`, `PORT`, `NODE_ENV`
+- [x] `ConfigModule.forRoot({ isGlobal: true, validate: … })` with Zod for `DATABASE_URL`, `JWT_SECRET`, `USER_SERVICE_PORT`, `NODE_ENV`
 - [x] Use `ConfigService` in `main.ts`, `auth.module.ts` (JWT), `jwt.strategy.ts` instead of raw `process.env` where applicable
 - [x] `app.enableShutdownHooks()` in `main.ts`
 
