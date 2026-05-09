@@ -73,7 +73,7 @@ export class AuthService {
         }
     }
 
-    async validateUser(email, password): Promise<UserResponseDto> {
+    async validateUser(email: string, password: string): Promise<UserResponseDto> {
 
         const user = await this.prisma.user.findUnique({
             where: { email },

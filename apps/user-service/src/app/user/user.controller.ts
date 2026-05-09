@@ -15,17 +15,27 @@ import { JWTAuthGuard } from '../auth/jwt.auth.gaurd';
 import { GetUser } from '../common/decorators/get.user.decorator';
 import { RolesGuard } from '../auth/role.guard';
 import { Roles } from '../auth/roles.decorator';
-import { ROLE } from '@ganhealth/types';
-import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { ROLE, STATUS } from '@ganhealth/types';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
 
 /** HTTP API for user registration, profile, and admin user listing. */
+@ApiTags('Users')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
 
   @Post('create')
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiBody({ schema: { example: { email: 'test@example.com', password: 'password', name: 'John Doe'} }})
   createUser(
     @Body(new ZodValidationPipe(CreateUserSchema))
     body: CreateUserDto
@@ -36,6 +46,23 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JWTAuthGuard)
   @Get('profile')
+  @ApiOkResponse({
+    description: 'Current authenticated user',
+    schema: {
+      example: {
+        email: 'user@example.com',
+        name: 'Jane Doe',
+        id: '550e8400-e29b-41d4-a716-446655440000',
+        role: 'USER',
+        status: 'ACTIVE',
+        isEmailVerified: true,
+        lastLoginAt: '2025-01-01T12:00:00.000Z',
+        profileImage: 'https://example.com/avatar.png',
+        createdAt: '2025-01-01T00:00:00.000Z',
+        updatedAt: '2025-01-01T12:00:00.000Z',
+      },
+    },
+  })
   getUser(@GetUser() user: UserResponseDto) {
     return user
   }
