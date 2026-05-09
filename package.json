@@ -2,6 +2,22 @@
   "name": "GanHealth",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "build": "nx build user-service",
+    "serve": "nx serve user-service",
+    "test": "nx test user-service",
+    "test:all": "nx run-many -t test",
+    "lint": "nx lint user-service",
+    "lint:all": "nx run-many -t lint",
+    "e2e": "nx run user-service-e2e:e2e",
+    "graph": "nx graph",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^11.0.0",
