@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "analytics": true,
+  "analytics": true,6.
   "plugins": [
     {
       "plugin": "@nx/webpack/plugin",
@@ -24,7 +24,10 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["user-service-e2e/**/*", "apps/user-service-e2e/**/*"]
+      "exclude": [
+        "user-service-e2e/**/*",
+        "apps/user-service-e2e/**/*"
+      ]
     }
   ],
   "workspaceLayout": {
